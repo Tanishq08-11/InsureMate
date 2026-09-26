@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Landing from './pages/Landing';
 import Experience from './pages/Experience';
+import { getWhatsAppUrl } from './config';
 
 // Scroll to top helper on route navigation
 function ScrollToTop() {
@@ -24,19 +25,14 @@ function ScrollToTop() {
 }
 
 export default function App() {
-  // Configured WhatsApp Click-to-Chat URL
-  // Can be customized by the team with their WhatsApp Business number
-  const WHATSAPP_PHONE = '919876543210';
-  const WHATSAPP_DEFAULT_TEXT = encodeURIComponent(
-    'Hi InsureMate! I would like to check my health insurance policy coverage and understand treatment costs.'
-  );
-  const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${WHATSAPP_DEFAULT_TEXT}`;
+  // Official WhatsApp Click-to-Chat URL from centralized config / env variable
+  const whatsappUrl = getWhatsAppUrl();
 
   return (
     <BrowserRouter>
       <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#172033] font-sans antialiased selection:bg-[#5EEAD4]/30 selection:text-[#0B1F3A]">
-        {/* Global Navigation with Existing Logo Asset */}
+        {/* Global Navigation with Official Logo */}
         <Navbar whatsappUrl={whatsappUrl} />
 
         {/* Main Routed Content */}
