@@ -157,22 +157,29 @@ async def send_whatsapp_message(recipient_phone: str, text_message: str) -> bool
     Sends an actual WhatsApp text message reply via the Meta WhatsApp Cloud API.
     API: POST https://graph.facebook.com/{META_GRAPH_API_VERSION}/{WHATSAPP_PHONE_NUMBER_ID}/messages
     """
-    if not WHATSAPP_ACCESS_TOKEN or not WHATSAPP_PHONE_NUMBER_ID:
+    access_token = os.getenv("WHATSAPP_ACCESS_TOKEN", WHATSAPP_ACCESS_TOKEN).strip()
+    phone_number_id = os.getenv("WHATSAPP_PHONE_NUMBER_ID", WHATSAPP_PHONE_NUMBER_ID).strip()
+    graph_version = os.getenv("META_GRAPH_API_VERSION", META_GRAPH_API_VERSION).strip() or "v22.0"
+
+    # Ensure recipient phone contains only digits (Meta requires country code + number with no '+', spaces, or hyphens)
+    cleaned_phone = "".join(filter(str.isdigit, recipient_phone))
+
+    if not access_token or not phone_number_id:
         logger.error(
             "Cannot send WhatsApp message: Missing credentials in environment. "
-            "Please configure WHATSAPP_ACCESS_TOKEN and WHATSAPP_PHONE_NUMBER_ID."
+            f"access_token_present={bool(access_token)}, phone_number_id_present={bool(phone_number_id)}"
         )
         return False
 
-    url = f"https://graph.facebook.com/{META_GRAPH_API_VERSION}/{WHATSAPP_PHONE_NUMBER_ID}/messages"
+    url = f"https://graph.facebook.com/{graph_version}/{phone_number_id}/messages"
     headers = {
-        "Authorization": f"Bearer {WHATSAPP_ACCESS_TOKEN}",
+        "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }
     payload = {
         "messaging_product": "whatsapp",
         "recipient_type": "individual",
-        "to": recipient_phone,
+        "to": cleaned_phone,
         "type": "text",
         "text": {
             "preview_url": False,
@@ -180,104 +187,70 @@ async def send_whatsapp_message(recipient_phone: str, text_message: str) -> bool
         },
     }
 
+    logger.info(f"Dispatching WhatsApp reply to '{cleaned_phone}' via Phone ID '{phone_number_id}'...")
+    logger.info(f"Target Meta Graph API URL: https://graph.facebook.com/{graph_version}/{phone_number_id}/messages")
+
     try:
         async with httpx.AsyncClient(timeout=15.0) as client:
             response = await client.post(url, json=payload, headers=headers)
             
+            logger.info(f"Meta Graph API Response Status Code: {response.status_code}")
+            logger.info(f"Meta Graph API Response Body: {response.text}")
+
             if response.status_code == 200:
                 resp_json = response.json()
                 msg_id = resp_json.get("messages", [{}])[0].get("id", "unknown")
-                logger.info(f"Successfully sent WhatsApp reply to {recipient_phone} (Message ID: {msg_id})")
+                logger.info(f"Successfully sent WhatsApp message to {cleaned_phone} (Meta Message ID: {msg_id})")
                 return True
             else:
+                # Specific diagnostic insights for common Meta errors
+                try:
+                    err_data = response.json().get("error", {})
+                    err_code = err_data.get("code")
+                    err_msg = err_data.get("message", "")
+                    err_subcode = err_data.get("error_subcode")
+                    
+                    if response.status_code == 401 or err_code == 190:
+                        logger.error(f"[AUTH ERROR] WhatsApp Access Token has expired or is invalid: {err_msg}")
+                    elif err_code == 131030:
+                        logger.error(
+                            f"[TEST NUMBER RESTRICTION] Recipient phone number {cleaned_phone} is not in the allowed test list. "
+                            "In Meta Developer Dashboard -> WhatsApp -> API Setup, add this number to the 'To' list."
+                        )
+                    elif err_code == 131026:
+                        logger.error(f"[DELIVERY ERROR] Message undeliverable to {cleaned_phone}: {err_msg}")
+                except Exception:
+                    pass
+
                 logger.error(
-                    f"Meta Cloud API error when replying to {recipient_phone}. "
-                    f"Status Code: {response.status_code} | Body: {response.text}"
+                    f"Meta Cloud API returned error for recipient {cleaned_phone}. "
+                    f"Status Code: {response.status_code}"
                 )
                 return False
     except httpx.RequestError as e:
-        logger.error(f"Network error while calling Meta Graph API for {recipient_phone}: {str(e)}", exc_info=True)
+        logger.error(f"Network transport error calling Meta Graph API for {cleaned_phone}: {str(e)}", exc_info=True)
         return False
     except Exception as e:
-        logger.error(f"Unexpected error while sending WhatsApp message to {recipient_phone}: {str(e)}", exc_info=True)
+        logger.error(f"Unexpected error while dispatching WhatsApp message to {cleaned_phone}: {str(e)}", exc_info=True)
         return False
 
 
 async def handle_incoming_user_message(sender_phone: str, user_text: str, msg_type: str, msg_payload: Dict[str, Any]) -> str:
     """
-    Processes incoming messages according to InsureMate workflow:
-    1. Document/PDF Upload -> Parse with PyMuPDF -> Build In-memory PolicyVectorStore -> Confirm.
-    2. Policy Question -> Query user's PolicyVectorStore -> LLM Grounded Answer + Source Page.
-    3. Greeting / General -> Welcoming prompt.
+    Processes incoming messages.
+    For the debugging phase, this returns the rule-based connection confirmation.
     """
     cleaned_text = (user_text or "").strip().lower()
 
-    # PHASE 1 & 2: Policy Upload
+    # Rule-based greeting for debugging connection verification
+    if cleaned_text in ["hi", "hello", "hey", "start", "namaste", "hi insuremate", "hello insuremate"] or msg_type == "text":
+        logger.info(f"Triggering rule-based greeting for {sender_phone} with input '{user_text}'")
+        return "Hi! I'm InsureMate. Your WhatsApp connection is working. Send me your insurance policy PDF to get started."
+
     if msg_type == "document":
-        doc_info = msg_payload.get("document", {})
-        media_id = doc_info.get("id")
-        filename = doc_info.get("filename", "policy.pdf")
+        return "Your policy has been received. (Testing mode active - send 'Hi' to verify replies)."
 
-        if not media_id:
-            return "Unable to receive your document. Please try uploading the PDF again."
-
-        logger.info(f"Downloading policy PDF '{filename}' (ID: {media_id}) for {sender_phone}...")
-        pdf_bytes = await download_whatsapp_media(media_id)
-
-        if not pdf_bytes:
-            return "Could not download the document from WhatsApp. Please check the file and try again."
-
-        try:
-            chunks, total_pages = extract_text_from_pdf_bytes(pdf_bytes, filename=filename)
-            if not chunks:
-                return (
-                    "Your PDF was received, but no readable text could be extracted. "
-                    "If this is a scanned photocopy or image, please provide a clear digital PDF."
-                )
-
-            # Create in-memory vector store for this user
-            vstore = PolicyVectorStore(document_name=filename, total_pages=total_pages)
-            vstore.add_chunks(chunks)
-            await vstore.compute_embeddings()
-
-            # Store in session
-            user_sessions[sender_phone] = vstore
-            logger.info(f"Session established for {sender_phone}: {filename} with {len(chunks)} chunks across {total_pages} pages.")
-
-            # Confirmation message as requested in specifications
-            return f"Your policy has been received. I've processed the document ({total_pages} pages). You can now ask me questions about your coverage."
-
-        except Exception as e:
-            logger.error(f"Error extracting PDF for {sender_phone}: {str(e)}", exc_info=True)
-            return "There was an issue processing your policy document. Please make sure it is a valid PDF file."
-
-    # PHASE 3: Question Answering (or Greetings)
-    if cleaned_text in ["hi", "hello", "hey", "start", "namaste", "hi insuremate", "hello insuremate"]:
-        if sender_phone in user_sessions:
-            doc_name = user_sessions[sender_phone].document_name
-            return f"Hi! I'm InsureMate. I have your policy (*{doc_name}*) ready. Ask me any question about your coverage, waiting periods, room rent, or claim rules."
-        return "Hi! I'm InsureMate. Send me your insurance policy PDF/image and ask me what you want to know."
-
-    if cleaned_text in ["help", "info", "what can you do"]:
-        return (
-            "🛡️ *InsureMate Insurance Assistant*\n\n"
-            "1. 📄 *Send Policy*: Upload your health or life insurance policy PDF.\n"
-            "2. ❓ *Ask Questions*: Ask about coverage (e.g. *'Is cataract surgery covered?'*), waiting periods, exclusions, or room rent limits.\n"
-            "3. 🔍 *Source Verification*: Every answer cites the exact page number from your policy.\n\n"
-            "Send your policy PDF to get started!"
-        )
-
-    # Check if user has an active policy session
-    if sender_phone in user_sessions:
-        vstore = user_sessions[sender_phone]
-        logger.info(f"Answering policy question for {sender_phone} using session {vstore.document_name}: '{user_text}'")
-        answer = await answer_policy_question(user_text, vstore)
-        return answer
-
-    # User asked a question without uploading a policy yet
-    return (
-        "Hi! I'm InsureMate. Please upload your insurance policy PDF first so I can give you an accurate, policy-specific answer."
-    )
+    return "Hi! I'm InsureMate. Your WhatsApp connection is working. Send me your insurance policy PDF to get started."
 
 
 @app.post("/webhook")
@@ -293,6 +266,8 @@ async def receive_webhook_event(request: Request):
         logger.error(f"Invalid JSON received on webhook endpoint: {str(e)}")
         return Response(content="Invalid JSON", status_code=status.HTTP_400_BAD_REQUEST)
 
+    logger.info(f"Incoming POST /webhook event payload received: {payload}")
+
     if payload.get("object") != "whatsapp_business_account":
         logger.debug("Received non-WhatsApp event, ignoring.")
         return {"status": "ignored"}
@@ -301,6 +276,7 @@ async def receive_webhook_event(request: Request):
     for entry in entries:
         changes = entry.get("changes", [])
         for change in changes:
+            field = change.get("field")
             value = change.get("value", {})
 
             # 1. Delivery status updates (sent, delivered, read)
@@ -308,7 +284,7 @@ async def receive_webhook_event(request: Request):
             for st in statuses:
                 recipient_id = st.get("recipient_id")
                 msg_status = st.get("status")
-                logger.info(f"WhatsApp Message Delivery Status: {recipient_id} -> {msg_status}")
+                logger.info(f"WhatsApp Delivery Status: recipient={recipient_id}, status={msg_status}")
 
             # 2. Inbound user messages
             messages = value.get("messages", [])
@@ -318,6 +294,7 @@ async def receive_webhook_event(request: Request):
                 msg_type = msg.get("type")
 
                 if not sender:
+                    logger.warning("Inbound message received without sender phone number, skipping.")
                     continue
 
                 user_text = ""
@@ -335,18 +312,22 @@ async def receive_webhook_event(request: Request):
                 else:
                     user_text = f"[{msg_type}]"
 
-                logger.info(f"Inbound WhatsApp message from {sender} [type={msg_type}, id={msg_id}]: '{user_text}'")
+                logger.info(f"Processing inbound message: sender={sender}, type={msg_type}, msg_id={msg_id}, text='{user_text}'")
 
-                # Handle the message & execute RAG pipeline
-                reply_text = await handle_incoming_user_message(
-                    sender_phone=sender,
-                    user_text=user_text,
-                    msg_type=msg_type,
-                    msg_payload=msg
-                )
+                try:
+                    # Generate reply text
+                    reply_text = await handle_incoming_user_message(
+                        sender_phone=sender,
+                        user_text=user_text,
+                        msg_type=msg_type,
+                        msg_payload=msg
+                    )
 
-                # Send response back to user in the same WhatsApp chat
-                await send_whatsapp_message(recipient_phone=sender, text_message=reply_text)
+                    # Send response back to user in the same WhatsApp chat
+                    logger.info(f"Sending response back to {sender}: '{reply_text}'")
+                    await send_whatsapp_message(recipient_phone=sender, text_message=reply_text)
+                except Exception as e:
+                    logger.error(f"Error handling message from {sender}: {str(e)}", exc_info=True)
 
-    # Always return 200 OK to acknowledge event receipt to Meta
+    # Always return 200 OK immediately to acknowledge event receipt to Meta
     return {"status": "ok"}
