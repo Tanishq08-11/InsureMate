@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { MessageSquare, Menu, X, ArrowUpRight } from 'lucide-react';
 import logoImg from '../assets/logo.png';
 
 export default function Navbar({ whatsappUrl }) {
@@ -20,14 +20,14 @@ export default function Navbar({ whatsappUrl }) {
     <header
       className={`sticky top-0 z-50 transition-all duration-200 ${
         scrolled
-          ? 'bg-[#F6F3EC]/95 backdrop-blur-md border-b border-[#D9D6CE] shadow-[0_1px_0_rgba(11,18,32,0.03)]'
-          : 'bg-[#F6F3EC] border-b border-transparent'
+          ? 'bg-[#F8FAFC]/95 backdrop-blur-md border-b border-[#E2E8F0]/90 shadow-2xs'
+          : 'bg-[#F8FAFC] border-b border-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
-
-          {/* Logo */}
+          
+          {/* Logo using existing InsureMate logo asset */}
           <Link to="/" className="flex items-center gap-3 group">
             <img
               src={logoImg}
@@ -36,25 +36,23 @@ export default function Navbar({ whatsappUrl }) {
             />
           </Link>
 
-          {/* Desktop nav */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-7">
             <Link
               to="/#problem"
               className={`text-sm font-medium transition-colors ${
-                location.pathname === '/'
-                  ? 'text-[#172033] hover:text-[#356AE6]'
-                  : 'text-[#667085] hover:text-[#0B1220]'
+                location.pathname === '/' ? 'text-[#172033] hover:text-[#00A896]' : 'text-[#64748B] hover:text-[#0B1F3A]'
               }`}
             >
               Why InsureMate
             </Link>
-
+            
             <Link
               to="/experience"
               className={`text-sm font-medium transition-colors px-3 py-1.5 rounded-md ${
                 location.pathname === '/experience'
-                  ? 'bg-[#356AE6]/10 text-[#356AE6] font-semibold'
-                  : 'text-[#172033] hover:text-[#356AE6]'
+                  ? 'bg-[#00A896]/10 text-[#00A896] font-semibold'
+                  : 'text-[#172033] hover:text-[#00A896]'
               }`}
             >
               How It Works (Live Demo)
@@ -62,14 +60,14 @@ export default function Navbar({ whatsappUrl }) {
 
             <Link
               to="/#impact"
-              className="text-sm font-medium text-[#667085] hover:text-[#356AE6] transition-colors"
+              className="text-sm font-medium text-[#64748B] hover:text-[#00A896] transition-colors"
             >
               Impact
             </Link>
 
             <Link
               to="/#research"
-              className="text-sm font-medium text-[#667085] hover:text-[#356AE6] transition-colors"
+              className="text-sm font-medium text-[#64748B] hover:text-[#00A896] transition-colors"
             >
               Research
             </Link>
@@ -81,79 +79,75 @@ export default function Navbar({ whatsappUrl }) {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#356AE6] text-white text-sm font-semibold hover:bg-[#2a58c2] transition-all duration-150 shadow-[0_4px_14px_-6px_rgba(53,106,230,0.5)] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#0B1F3A] text-white text-sm font-semibold hover:bg-[#00A896] transition-all duration-150 shadow-xs active:scale-[0.98]"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-white/85" />
+              <div className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
               <span>CHAT ON WHATSAPP</span>
-              <ArrowUpRight className="w-4 h-4 opacity-80" />
+              <ArrowUpRight className="w-4 h-4 opacity-70" />
             </a>
           </div>
 
-          {/* Mobile toggle */}
+          {/* Mobile menu button */}
           <div className="flex md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               type="button"
-              className="p-2 rounded-lg text-[#172033] hover:bg-[#D9D6CE]/50 transition-colors"
+              className="p-2 rounded-lg text-[#172033] hover:bg-[#E2E8F0]/60 transition-colors"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6 text-[#0B1220]" />
-              )}
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-[#0B1F3A]" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#FCFBF7] border-b border-[#D9D6CE] px-4 pt-3 pb-6 space-y-3 animate-fade-in">
+        <div className="md:hidden bg-white border-b border-[#E2E8F0] px-4 pt-3 pb-6 space-y-3 animate-fade-in shadow-lg">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-semibold text-[#0B1220] hover:text-[#356AE6]"
+            className="block py-2 text-base font-semibold text-[#0B1F3A] hover:text-[#00A896]"
           >
             Product Overview
           </Link>
           <Link
             to="/experience"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-semibold text-[#356AE6]"
+            className="block py-2 text-base font-semibold text-[#00A896]"
           >
             How It Works (Live Demo) →
           </Link>
           <Link
             to="/#problem"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm text-[#667085] hover:text-[#0B1220]"
+            className="block py-2 text-sm text-[#64748B] hover:text-[#0B1F3A]"
           >
             Why InsureMate
           </Link>
           <Link
             to="/#impact"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm text-[#667085] hover:text-[#0B1220]"
+            className="block py-2 text-sm text-[#64748B] hover:text-[#0B1F3A]"
           >
             Impact
           </Link>
           <Link
             to="/#research"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm text-[#667085] hover:text-[#0B1220]"
+            className="block py-2 text-sm text-[#64748B] hover:text-[#0B1F3A]"
           >
-            Research &amp; Evidence
+            Research & Evidence
           </Link>
-
+          
           <div className="pt-2">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[#356AE6] text-white font-semibold hover:bg-[#2a58c2] transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[#00A896] text-white font-semibold hover:bg-[#008f80] transition-colors"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-white/85" />
+              <div className="w-2 h-2 rounded-full bg-[#25D366]" />
               <span>Chat on WhatsApp</span>
               <ArrowUpRight className="w-4 h-4" />
             </a>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import {
@@ -21,6 +21,8 @@ const IMAGES = {
 };
 
 export default function Landing({ whatsappUrl }) {
+  const [activeClause] = useState('WAITING PERIODS');
+
   const policyClauses = [
     { name: 'EXCLUSIONS', desc: 'Specific non-covered treatments, cosmetic procedures, or unlisted consumables.' },
     { name: 'WAITING PERIODS', desc: 'Mandatory 24–48 month waiting periods for pre-existing diseases or specific eye/joint conditions.' },
@@ -45,20 +47,20 @@ export default function Landing({ whatsappUrl }) {
   ];
 
   return (
-    <div className="space-y-0 font-ui bg-[#F6F3EC]">
+    <div className="space-y-0 font-ui bg-white">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-        .font-display { font-family: 'Fraunces', ui-serif, Georgia, serif; font-optical-sizing: auto; }
-        .font-ui { font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        .font-display { font-family: 'Instrument Serif', ui-serif, Georgia, serif; letter-spacing: -0.01em; }
+        .font-ui { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
         .font-mono-x { font-family: 'JetBrains Mono', ui-monospace, monospace; }
       `}</style>
 
-      {/* ═══════════════ 1. HERO (light) ═══════════════ */}
-      <section className="relative pt-10 pb-20 lg:pt-20 lg:pb-28 bg-[#F6F3EC] overflow-hidden border-b border-[#D9D6CE]">
+      {/* 1. HERO — WHITE */}
+      <section className="relative pt-10 pb-20 lg:pt-20 lg:pb-28 bg-white overflow-hidden border-b border-[#E4E7EC]">
         <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
-            backgroundImage: 'radial-gradient(#0B1220 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(#043858 1px, transparent 1px)',
             backgroundSize: '28px 28px',
           }}
         />
@@ -66,20 +68,20 @@ export default function Landing({ whatsappUrl }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-10 items-start">
 
-            {/* LEFT */}
             <div className="lg:col-span-6 space-y-8">
-              <div className="inline-flex items-center gap-2.5 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#356AE6] uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#356AE6]" />
+              <div className="inline-flex items-center gap-2.5 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#043858] uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#7DD3C0]" />
                 Insurance Coverage &amp; Cost Intelligence
               </div>
 
-              <h1 className="font-display text-[2.6rem] sm:text-6xl lg:text-[4rem] leading-[1.02] font-semibold tracking-[-0.02em] text-[#0B1220]">
+              {/* TWO-COLOR HEADING */}
+              <h1 className="font-display text-[2.8rem] sm:text-6xl lg:text-[4.2rem] leading-[1.02] tracking-[-0.02em] text-[#043858]">
                 Insurance is complicated.
                 <br />
-                <span className="italic font-normal text-[#356AE6]">shouldn't be.</span>
+                <span className="italic text-[#5fbeaa]">Understanding it shouldn't be.</span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-[#667085] leading-relaxed max-w-xl">
+              <p className="text-lg sm:text-xl text-[#526170] leading-relaxed max-w-xl">
                 InsureMate turns complex insurance policies into clear, evidence-backed answers and treatment-cost intelligence.
               </p>
 
@@ -88,7 +90,7 @@ export default function Landing({ whatsappUrl }) {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-md bg-[#356AE6] text-white font-semibold text-[15px] tracking-wide hover:bg-[#2a58c2] transition-colors active:scale-[0.99]"
+                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-md bg-[#043858] text-white font-semibold text-[15px] tracking-wide hover:bg-[#032c46] transition-colors active:scale-[0.99]"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>CHAT ON WHATSAPP</span>
@@ -97,30 +99,29 @@ export default function Landing({ whatsappUrl }) {
 
                 <Link
                   to="/experience"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-md border border-[#D9D6CE] bg-[#FCFBF7] text-[#172033] font-semibold text-[15px] tracking-wide hover:bg-white hover:border-[#0B1220]/30 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-md border border-[#E4E7EC] bg-white text-[#043858] font-semibold text-[15px] tracking-wide hover:bg-[#F7F8FA] hover:border-[#043858]/25 transition-colors"
                 >
                   <span>SEE HOW IT WORKS</span>
-                  <ArrowRight className="w-4 h-4 text-[#667085]" />
+                  <ArrowRight className="w-4 h-4 text-[#526170]" />
                 </Link>
               </div>
 
-              {/* Overlapping images */}
               <div className="relative pt-3 pb-6">
-                <figure className="relative overflow-hidden rounded-sm border border-[#D9D6CE]">
+                <figure className="relative overflow-hidden rounded-sm border border-[#E4E7EC]">
                   <img
                     src={IMAGES.heroDocuments}
                     alt="Insurance policy documents and medical paperwork on a desk"
                     loading="lazy"
                     className="w-full h-[240px] sm:h-[280px] object-cover grayscale-[10%] contrast-[1.03]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#0B1220]/60 via-[#0B1220]/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#043858]/55 via-[#043858]/5 to-transparent" />
                   <figcaption className="absolute bottom-3 left-4 right-4 flex items-end justify-between gap-4">
-                    <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-white/90">The document, not the story</span>
-                    <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-white/70">Fig. 01</span>
+                    <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-white/95">The document, not the story</span>
+                    <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-white/75">Fig. 01</span>
                   </figcaption>
                 </figure>
 
-                <figure className="absolute -bottom-4 right-4 sm:right-8 w-[42%] max-w-[220px] overflow-hidden rounded-sm border border-[#D9D6CE] shadow-[0_20px_40px_-20px_rgba(11,18,32,0.35)]">
+                <figure className="absolute -bottom-4 right-4 sm:right-8 w-[42%] max-w-[220px] overflow-hidden rounded-sm border border-[#E4E7EC] shadow-[0_20px_40px_-20px_rgba(4,56,88,0.3)]">
                   <img
                     src={IMAGES.deskOverhead}
                     alt="Overhead view of medical bills, calculator and insurance paperwork"
@@ -130,25 +131,22 @@ export default function Landing({ whatsappUrl }) {
                 </figure>
               </div>
 
-              {/* Trust chips */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2 text-[11px] font-mono-x tracking-[0.12em] uppercase text-[#667085]">
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2 text-[11px] font-mono-x tracking-[0.12em] uppercase text-[#526170]">
                 <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#356AE6]" /> Page 18 · Clause Evidence
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#7DD3C0]" /> Page 18 · Clause Evidence
                 </span>
                 <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#356AE6]" /> WhatsApp Native
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#7DD3C0]" /> WhatsApp Native
                 </span>
                 <span className="flex items-center gap-2">
-                  <Lock className="w-3.5 h-3.5 text-[#356AE6]" /> Zero Guesswork
+                  <Lock className="w-3.5 h-3.5 text-[#7DD3C0]" /> Zero Guesswork
                 </span>
               </div>
             </div>
 
-            {/* RIGHT — phone + QR */}
             <div className="lg:col-span-6 flex flex-col sm:flex-row items-start justify-center gap-6 lg:pt-4">
 
-              {/* Phone — WhatsApp chrome lives only inside this frame */}
-              <div className="w-full max-w-[320px] rounded-[36px] bg-[#0B1220] p-2.5 shadow-[0_24px_50px_-20px_rgba(11,18,32,0.45)]">
+              <div className="w-full max-w-[320px] rounded-[36px] bg-[#043858] p-2.5 shadow-[0_24px_50px_-20px_rgba(4,56,88,0.4)]">
                 <div className="bg-[#EFEAE2] rounded-[28px] overflow-hidden flex flex-col h-[520px]">
                   <div className="bg-[#075E54] text-white px-3.5 py-3 flex items-center gap-2.5 shrink-0">
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs text-[#5EEAD4]">IM</div>
@@ -164,7 +162,7 @@ export default function Landing({ whatsappUrl }) {
 
                   <div className="flex-1 p-3 space-y-3 overflow-y-auto text-xs bg-[#EFEAE2]">
                     <div className="text-center">
-                      <span className="bg-white/85 text-[#667085] text-[10px] font-mono-x px-2 py-0.5 rounded">
+                      <span className="bg-white/85 text-[#526170] text-[10px] font-mono-x px-2 py-0.5 rounded">
                         Policy: Star Comprehensive Health Schedule
                       </span>
                     </div>
@@ -172,22 +170,22 @@ export default function Landing({ whatsappUrl }) {
                     <div className="flex justify-end">
                       <div className="bg-[#E7FFDB] text-[#172033] rounded-lg rounded-tr-none px-3 py-2 max-w-[85%] space-y-1 border border-[#D0F0C0]">
                         <p className="text-xs font-medium">Does my policy cover cataract surgery?</p>
-                        <p className="text-[9px] text-[#667085] text-right font-mono-x">11:15 AM · ✓✓</p>
+                        <p className="text-[9px] text-[#526170] text-right font-mono-x">11:15 AM · ✓✓</p>
                       </div>
                     </div>
 
                     <div className="flex justify-start">
                       <div className="bg-white text-[#172033] rounded-lg rounded-tl-none px-3 py-2.5 max-w-[90%] space-y-2">
                         <p className="text-xs leading-relaxed">
-                          <strong className="text-[#356AE6] font-semibold">Potentially covered</strong>, subject to the applicable waiting period and policy limits.
+                          <strong className="text-[#043858] font-semibold">Potentially covered</strong>, subject to the applicable waiting period and policy limits.
                         </p>
-                        <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-[#0B1220]/5 border border-[#0B1220]/10 text-[10px] font-mono-x text-[#0B1220]">
+                        <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-[#043858]/5 border border-[#043858]/10 text-[10px] font-mono-x text-[#043858]">
                           <FileText className="w-3 h-3" />
                           <span>Page 18 · Section 3.4</span>
                         </div>
                         <div className="pt-0.5 flex items-center justify-between border-t border-slate-100">
-                          <span className="text-[9px] font-mono-x uppercase tracking-wider text-[#356AE6] font-bold">EVIDENCE-BACKED</span>
-                          <span className="text-[9px] text-[#667085] font-mono-x">11:15 AM</span>
+                          <span className="text-[9px] font-mono-x uppercase tracking-wider text-[#7DD3C0] font-bold">EVIDENCE-BACKED</span>
+                          <span className="text-[9px] text-[#526170] font-mono-x">11:15 AM</span>
                         </div>
                       </div>
                     </div>
@@ -195,13 +193,13 @@ export default function Landing({ whatsappUrl }) {
                     <div className="flex justify-end">
                       <div className="bg-[#E7FFDB] text-[#172033] rounded-lg rounded-tr-none px-3 py-2 max-w-[85%] space-y-1 border border-[#D0F0C0]">
                         <p className="text-xs font-medium">What might I have to pay?</p>
-                        <p className="text-[9px] text-[#667085] text-right font-mono-x">11:16 AM · ✓✓</p>
+                        <p className="text-[9px] text-[#526170] text-right font-mono-x">11:16 AM · ✓✓</p>
                       </div>
                     </div>
 
                     <div className="flex justify-start">
-                      <div className="bg-white text-[#172033] rounded-lg rounded-tl-none px-3 py-2.5 max-w-[90%] space-y-2 border-l-2 border-l-[#D39A3A]">
-                        <div className="flex items-center gap-1 text-[10px] font-mono-x font-semibold text-[#8a6508]">
+                      <div className="bg-white text-[#172033] rounded-lg rounded-tl-none px-3 py-2.5 max-w-[90%] space-y-2 border-l-2 border-l-[#7DD3C0]">
+                        <div className="flex items-center gap-1 text-[10px] font-mono-x font-semibold text-[#043858]">
                           <AlertCircle className="w-3 h-3" />
                           <span>NEED LOCATION &amp; HOSPITAL</span>
                         </div>
@@ -209,15 +207,15 @@ export default function Landing({ whatsappUrl }) {
                           I need your treatment location and hospital type before estimating reliably.
                         </p>
                         <div className="flex items-center justify-between border-t border-slate-100 pt-1">
-                          <span className="text-[9px] font-mono-x text-[#667085]">NO GUESSWORK</span>
-                          <span className="text-[9px] text-[#667085] font-mono-x">11:16 AM</span>
+                          <span className="text-[9px] font-mono-x text-[#526170]">NO GUESSWORK</span>
+                          <span className="text-[9px] text-[#526170] font-mono-x">11:16 AM</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="bg-[#F0F2F5] px-3 py-2 border-t border-slate-200 flex items-center gap-2">
-                    <div className="flex-1 bg-white rounded-full px-3 py-1.5 text-[11px] text-[#667085] border border-slate-200">
+                    <div className="flex-1 bg-white rounded-full px-3 py-1.5 text-[11px] text-[#526170] border border-slate-200">
                       Type a policy question...
                     </div>
                     <div className="w-7 h-7 rounded-full bg-[#075E54] flex items-center justify-center text-white">
@@ -227,28 +225,27 @@ export default function Landing({ whatsappUrl }) {
                 </div>
               </div>
 
-              {/* QR card — light palette */}
-              <div className="w-full sm:w-[250px] bg-[#FCFBF7] text-[#172033] rounded-xl p-5 border border-[#D9D6CE] flex flex-col items-center text-center space-y-4">
-                <div className="w-full pb-3 border-b border-[#D9D6CE]">
-                  <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#356AE6] font-semibold">
+              <div className="w-full sm:w-[250px] bg-white text-[#043858] rounded-xl p-5 border border-[#E4E7EC] flex flex-col items-center text-center space-y-4">
+                <div className="w-full pb-3 border-b border-[#E4E7EC]">
+                  <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
                     Start on WhatsApp
                   </span>
-                  <h3 className="font-display text-lg font-semibold text-[#172033] mt-1">
+                  <h3 className="font-display text-lg text-[#043858] mt-1">
                     Scan Once to Begin
                   </h3>
                 </div>
 
-                <div className="p-3 bg-white rounded-lg border border-[#D9D6CE]">
+                <div className="p-3 bg-white rounded-lg border border-[#E4E7EC]">
                   <QRCodeSVG
                     value={whatsappUrl}
                     size={128}
                     bgColor={"#FFFFFF"}
-                    fgColor={"#0B1220"}
+                    fgColor={"#043858"}
                     level={"M"}
                   />
                 </div>
 
-                <p className="text-xs text-[#172033] font-medium leading-snug">
+                <p className="text-xs text-[#043858] font-medium leading-snug">
                   No app download. No complicated setup.
                 </p>
 
@@ -256,12 +253,12 @@ export default function Landing({ whatsappUrl }) {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2.5 px-3 rounded-md bg-[#356AE6] hover:bg-[#2a58c2] text-white text-[11px] font-mono-x font-semibold tracking-[0.16em] uppercase transition-colors"
+                  className="w-full py-2.5 px-3 rounded-md bg-[#043858] hover:bg-[#032c46] text-white text-[11px] font-mono-x font-semibold tracking-[0.16em] uppercase transition-colors"
                 >
                   Scan to Chat
                 </a>
 
-                <p className="text-[10px] text-[#667085] leading-relaxed pt-2 border-t border-[#D9D6CE]">
+                <p className="text-[10px] text-[#526170] leading-relaxed pt-2 border-t border-[#E4E7EC]">
                   After your first conversation, you can return directly to WhatsApp. You do not need to revisit this website for every question.
                 </p>
               </div>
@@ -270,140 +267,141 @@ export default function Landing({ whatsappUrl }) {
         </div>
       </section>
 
-      {/* ═══════════════ 2. CORE STATEMENT (LIGHT bg, strong typography) ═══════════════ */}
-      <section className="py-24 lg:py-32 bg-[#FCFBF7] relative overflow-hidden border-b border-[#D9D6CE]">
+      {/* 2. CORE STATEMENT — LIGHT GREY (no dark) */}
+      <section className="py-24 lg:py-32 bg-[#F7F8FA] relative overflow-hidden border-b border-[#E4E7EC]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex items-center gap-3 mb-8">
-            <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#356AE6] font-semibold">
+            <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
               The Core Reality
             </span>
-            <span className="h-px flex-1 bg-[#D9D6CE]" />
+            <span className="h-px flex-1 bg-[#E4E7EC]" />
           </div>
 
-          <blockquote className="font-display text-[2.4rem] sm:text-5xl lg:text-[4rem] leading-[1.05] font-semibold tracking-[-0.02em] text-[#0B1220]">
+          <blockquote className="font-display text-[2.6rem] sm:text-5xl lg:text-[4.2rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
             “The policy doesn’t fail.
             <br />
-            <span className="italic font-normal text-[#356AE6]">
+            <span className="italic text-[#7DD3C0]">
               The information platform does.”
             </span>
           </blockquote>
 
-          <div className="mt-10 max-w-2xl space-y-4 text-[#667085] text-base leading-relaxed">
+          <div className="mt-10 max-w-2xl space-y-4 text-[#526170] text-base leading-relaxed">
             <p>
               Insurance information is often available — but buried inside pages of conditions, exclusions, waiting periods and limits.
             </p>
-            <p className="text-[#0B1220] font-medium">
+            <p className="text-[#043858] font-medium">
               The problem is not the existence of information. The problem is making it understandable when people actually need it.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ═══════════════ 3. PROBLEM + RESEARCH ═══════════════ */}
-      <section id="problem" className="py-20 lg:py-28 bg-[#F6F3EC] border-b border-[#D9D6CE]">
+      {/* 3. PROBLEM + RESEARCH — WHITE */}
+      <section id="problem" className="py-20 lg:py-28 bg-white border-b border-[#E4E7EC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
 
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#356AE6] uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#356AE6]" />
+            <div className="inline-flex items-center gap-2 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#043858] uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#7DD3C0]" />
               The Information Gap
             </div>
-            <h2 className="font-display text-[2.2rem] sm:text-5xl leading-[1.05] font-semibold tracking-[-0.02em] text-[#0B1220]">
+            <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
               A transparency deficit <br />
-              <span className="italic font-normal text-[#356AE6]">in health insurance.</span>
+              <span className="italic text-[#7DD3C0]">in health insurance.</span>
             </h2>
-            <p className="text-base sm:text-lg text-[#667085] leading-relaxed">
+            <p className="text-base sm:text-lg text-[#526170] leading-relaxed">
               Documented survey evidence shows widespread ambiguity among insured policyholders at the time of claim filing.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="p-6 sm:p-8 bg-[#FCFBF7] border border-[#D9D6CE] border-l-2 border-l-[#D39A3A] space-y-3">
-              <div className="font-display text-6xl sm:text-7xl font-semibold text-[#0B1220] tracking-[-0.03em] leading-none">
-                80<span className="text-[#D39A3A]">%</span>
+            <div className="p-6 sm:p-8 bg-white border border-[#E4E7EC] border-l-2 border-l-[#7DD3C0] space-y-3">
+              <div className="font-display text-6xl sm:text-7xl text-[#043858] tracking-[-0.03em] leading-none">
+                80<span className="text-[#7DD3C0]">%</span>
               </div>
-              <p className="text-sm text-[#172033] leading-relaxed pt-2">
+              <p className="text-sm text-[#043858] leading-relaxed pt-2">
                 of respondents in the cited consumer survey were unsure about what their insurance policy covered.
               </p>
-              <div className="pt-3 border-t border-[#D9D6CE] font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#667085]">
+              <div className="pt-3 border-t border-[#E4E7EC] font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#526170]">
                 Source: CoverSure Health Survey (2025)
               </div>
             </div>
 
-            <div className="p-6 sm:p-8 bg-[#FCFBF7] border border-[#D9D6CE] space-y-3">
-              <div className="font-display text-6xl sm:text-7xl font-semibold text-[#0B1220] tracking-[-0.03em] leading-none">
-                65<span className="text-[#D39A3A]">%</span>
+            <div className="p-6 sm:p-8 bg-white border border-[#E4E7EC] space-y-3">
+              <div className="font-display text-6xl sm:text-7xl text-[#043858] tracking-[-0.03em] leading-none">
+                65<span className="text-[#7DD3C0]">%</span>
               </div>
-              <p className="text-sm text-[#172033] leading-relaxed pt-2">
+              <p className="text-sm text-[#043858] leading-relaxed pt-2">
                 reported little to no knowledge of policy details such as benefits, exclusions or claim procedures.
               </p>
-              <div className="pt-3 border-t border-[#D9D6CE] font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#667085]">
+              <div className="pt-3 border-t border-[#E4E7EC] font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#526170]">
                 Source: Policyholder Awareness Study
               </div>
             </div>
 
-            <div className="p-6 sm:p-8 bg-[#FCFBF7] border border-[#D9D6CE] space-y-3">
-              <div className="font-display text-6xl sm:text-7xl font-semibold text-[#0B1220] tracking-[-0.03em] leading-none">
-                50<span className="text-[#D39A3A]">%+</span>
+            <div className="p-6 sm:p-8 bg-white border border-[#E4E7EC] space-y-3">
+              <div className="font-display text-6xl sm:text-7xl text-[#043858] tracking-[-0.03em] leading-none">
+                50<span className="text-[#7DD3C0]">%+</span>
               </div>
-              <p className="text-sm text-[#172033] leading-relaxed pt-2">
+              <p className="text-sm text-[#043858] leading-relaxed pt-2">
                 of surveyed health-policy holders who filed claims reported rejection or partial approval in the cited survey.
               </p>
-              <div className="pt-3 border-t border-[#D9D6CE] font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#667085]">
+              <div className="pt-3 border-t border-[#E4E7EC] font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#526170]">
                 Source: LocalCircles Claim Survey
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-4 bg-[#FCFBF7] border border-[#D9D6CE] font-mono-x text-[12px] text-[#667085]">
-            <Info className="w-4 h-4 text-[#356AE6] shrink-0" />
+          <div className="flex items-center gap-3 p-4 bg-[#F7F8FA] border border-[#E4E7EC] font-mono-x text-[12px] text-[#526170]">
+            <Info className="w-4 h-4 text-[#7DD3C0] shrink-0" />
             <span>Survey metrics reflect sampled policyholder respondents highlighting structural information gaps.</span>
           </div>
         </div>
       </section>
 
-      {/* ═══════════════ 4. CLAUSES (LIGHT bg) ═══════════════ */}
-      <section className="py-20 lg:py-28 bg-[#FCFBF7] border-b border-[#D9D6CE]">
+      {/* 4. CLAUSES — LIGHT GREY (no dark bg) */}
+      <section className="py-20 lg:py-28 bg-[#F7F8FA] border-b border-[#E4E7EC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="max-w-3xl space-y-4 mb-12">
-            <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#356AE6] font-semibold">
+            <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
               Document Complexity
             </span>
-            <h2 className="font-display text-[2.2rem] sm:text-5xl leading-[1.05] font-semibold tracking-[-0.02em] text-[#0B1220]">
+            <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
               What makes insurance <br />
-              <span className="italic font-normal text-[#356AE6]">hard to understand.</span>
+              <span className="italic text-[#7DD3C0]">hard to understand.</span>
             </h2>
-            <p className="text-base text-[#667085] leading-relaxed">
+            <p className="text-base text-[#526170] leading-relaxed">
               A standard health policy contains dozens of interlocking clauses that determine the final settlement.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#D9D6CE] border border-[#D9D6CE]">
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#E4E7EC] border border-[#E4E7EC]">
               {policyClauses.map((c) => (
-                <div key={c.name} className="p-5 bg-[#FCFBF7] space-y-2 hover:bg-[#F6F3EC] transition-colors">
-                  <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-[#356AE6] font-semibold">
+                <div key={c.name} className="p-5 bg-white space-y-2 hover:bg-[#F7F8FA] transition-colors">
+                  <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-[#7DD3C0] font-semibold">
                     {c.name}
                   </span>
-                  <p className="text-[12px] text-[#667085] leading-relaxed">
+                  <p className="text-[12px] text-[#526170] leading-relaxed">
                     {c.desc}
                   </p>
                 </div>
               ))}
             </div>
 
-            <div className="lg:col-span-5 p-7 bg-[#F6F3EC] text-[#172033] border border-[#D9D6CE] space-y-5">
-              <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#356AE6] font-semibold">
+            {/* InsureMate reveal card — now dark for accent contrast */}
+            <div className="lg:col-span-5 p-7 bg-[#043858] text-white border border-[#043858] space-y-5">
+              <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
                 InsureMate Intelligence
               </span>
-              <h3 className="font-display text-2xl sm:text-3xl font-semibold leading-tight tracking-[-0.01em] text-[#0B1220]">
+              <h3 className="font-display text-2xl sm:text-3xl leading-tight tracking-[-0.01em] text-white">
                 “Find the clause that actually matters.”
               </h3>
-              <p className="text-[13px] text-[#667085] leading-relaxed">
+              <p className="text-[13px] text-white/75 leading-relaxed">
                 Rather than forcing patients to navigate dense 45-page PDFs, InsureMate isolates the exact clause, waiting requirement, and applicable sub-limit for your specific medical question.
               </p>
-              <div className="pt-3 border-t border-[#D9D6CE] flex items-center justify-between font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#356AE6]">
+              <div className="pt-3 border-t border-white/15 flex items-center justify-between font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#7DD3C0]">
                 <span>Grounded Retrieval</span>
                 <span>Page-level Citations</span>
               </div>
@@ -412,28 +410,28 @@ export default function Landing({ whatsappUrl }) {
         </div>
       </section>
 
-      {/* ═══════════════ 5. WHATSAPP-FIRST ═══════════════ */}
-      <section className="py-20 lg:py-28 bg-[#F6F3EC] border-b border-[#D9D6CE]">
+      {/* 5. WHATSAPP-FIRST — WHITE */}
+      <section className="py-20 lg:py-28 bg-white border-b border-[#E4E7EC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
             <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#356AE6] uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#356AE6]" />
+              <div className="inline-flex items-center gap-2 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#043858] uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#7DD3C0]" />
                 Accessibility
               </div>
-              <h2 className="font-display text-[2.2rem] sm:text-5xl leading-[1.05] font-semibold tracking-[-0.02em] text-[#0B1220]">
+              <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
                 Your insurance assistant.
                 <br />
-                <span className="italic font-normal text-[#356AE6]">Already in your pocket.</span>
+                <span className="italic text-[#7DD3C0]">Already in your pocket.</span>
               </h2>
-              <p className="text-base sm:text-lg text-[#667085] leading-relaxed max-w-2xl">
+              <p className="text-base sm:text-lg text-[#526170] leading-relaxed max-w-2xl">
                 Start once through our website. After that, you don't need to return here every time.
               </p>
             </div>
 
             <figure className="lg:col-span-5">
-              <div className="overflow-hidden rounded-sm border border-[#D9D6CE]">
+              <div className="overflow-hidden rounded-sm border border-[#E4E7EC]">
                 <img
                   src={IMAGES.pocketChat}
                   alt="Person using a smartphone to review insurance information"
@@ -441,14 +439,14 @@ export default function Landing({ whatsappUrl }) {
                   className="w-full h-[200px] sm:h-[240px] object-cover grayscale-[15%] contrast-[1.03]"
                 />
               </div>
-              <figcaption className="mt-2 flex items-center justify-between font-mono-x text-[10px] tracking-[0.2em] uppercase text-[#667085]">
+              <figcaption className="mt-2 flex items-center justify-between font-mono-x text-[10px] tracking-[0.2em] uppercase text-[#526170]">
                 <span>WhatsApp-native workflow</span>
                 <span>Fig. 02</span>
               </figcaption>
             </figure>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-5 border-t border-[#D9D6CE]">
+          <div className="grid grid-cols-1 sm:grid-cols-5 border-t border-[#E4E7EC]">
             {[
               { num: '01', title: 'WEBSITE', desc: 'Scan QR Code' },
               { num: '02', title: 'WHATSAPP', desc: 'Opens Chat' },
@@ -456,14 +454,14 @@ export default function Landing({ whatsappUrl }) {
               { num: '04', title: 'ASK ANYTIME', desc: 'Natural English' },
               { num: '05', title: 'EVIDENCE', desc: 'Page-cited Answer' },
             ].map((step) => (
-              <div key={step.title} className="py-6 pr-6 border-b sm:border-b-0 sm:border-r border-[#D9D6CE] last:border-r-0 space-y-2">
-                <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#356AE6] font-semibold block">
+              <div key={step.title} className="py-6 pr-6 border-b sm:border-b-0 sm:border-r border-[#E4E7EC] last:border-r-0 space-y-2">
+                <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold block">
                   {step.num}
                 </span>
-                <span className="font-display font-semibold text-base text-[#0B1220] block tracking-[-0.01em]">
+                <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
                   {step.title}
                 </span>
-                <span className="text-[12px] text-[#667085] block leading-relaxed">
+                <span className="text-[12px] text-[#526170] block leading-relaxed">
                   {step.desc}
                 </span>
               </div>
@@ -471,29 +469,29 @@ export default function Landing({ whatsappUrl }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            <div className="pl-4 border-l-2 border-[#356AE6] space-y-2">
-              <span className="font-display font-semibold text-base text-[#0B1220] block tracking-[-0.01em]">
+            <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
+              <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
                 Continue previous conversation
               </span>
-              <p className="text-[13px] text-[#667085] leading-relaxed">
+              <p className="text-[13px] text-[#526170] leading-relaxed">
                 Resume right where you left off. Your policy context is retained according to your privacy settings.
               </p>
             </div>
 
-            <div className="pl-4 border-l-2 border-[#356AE6] space-y-2">
-              <span className="font-display font-semibold text-base text-[#0B1220] block tracking-[-0.01em]">
+            <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
+              <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
                 Ask new questions
               </span>
-              <p className="text-[13px] text-[#667085] leading-relaxed">
+              <p className="text-[13px] text-[#526170] leading-relaxed">
                 Check room rents, diagnostics, pre-hospitalization allowances, or specific surgery eligibility anytime.
               </p>
             </div>
 
-            <div className="pl-4 border-l-2 border-[#356AE6] space-y-2">
-              <span className="font-display font-semibold text-base text-[#0B1220] block tracking-[-0.01em]">
+            <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
+              <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
                 Revisit previous answers
               </span>
-              <p className="text-[13px] text-[#667085] leading-relaxed">
+              <p className="text-[13px] text-[#526170] leading-relaxed">
                 Refer back to verified clause numbers during discussions with hospital insurance TPA desks.
               </p>
             </div>
@@ -501,100 +499,77 @@ export default function Landing({ whatsappUrl }) {
         </div>
       </section>
 
-      {/* ═══════════════ 6. COMPARISON ═══════════════ */}
-      <section id="comparison" className="py-20 lg:py-28 bg-[#FCFBF7] border-b border-[#D9D6CE]">
+      {/* 6. COMPARISON — LIGHT GREY */}
+      <section id="comparison" className="py-20 lg:py-28 bg-[#F7F8FA] border-b border-[#E4E7EC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
           <div className="max-w-3xl space-y-4">
-            <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#356AE6] font-semibold">
+            <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
               Industry Positioning
             </span>
-            <h2 className="font-display text-[2.2rem] sm:text-5xl leading-[1.05] font-semibold tracking-[-0.02em] text-[#0B1220]">
+            <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
               Where InsureMate fits
             </h2>
-            <p className="text-base sm:text-lg text-[#667085] leading-relaxed">
+            <p className="text-base sm:text-lg text-[#526170] leading-relaxed">
               Existing solutions solve parts of the insurance journey. InsureMate connects the information.
             </p>
           </div>
 
-          <div className="border border-[#D9D6CE] overflow-x-auto bg-[#FCFBF7]">
+          <div className="border border-[#E4E7EC] overflow-x-auto bg-white">
             <table className="w-full text-left border-collapse min-w-[760px] text-[12px]">
               <thead>
-                <tr className="bg-[#F6F3EC] border-b border-[#D9D6CE]">
-                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#667085] font-semibold w-[24%]">
-                    Capability
-                  </th>
-                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#667085] font-semibold">
-                    Traditional Policy Documents
-                  </th>
-                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#667085] font-semibold">
-                    Insurance / Claim Portals
-                  </th>
-                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#667085] font-semibold">
-                    Generic AI Assistants
-                  </th>
-                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#356AE6] font-semibold border-l border-[#D9D6CE] bg-[#356AE6]/[0.06]">
-                    InsureMate
-                  </th>
+                <tr className="bg-[#F7F8FA] border-b border-[#E4E7EC]">
+                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#526170] font-semibold w-[24%]">Capability</th>
+                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#526170] font-semibold">Traditional Policy Documents</th>
+                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#526170] font-semibold">Insurance / Claim Portals</th>
+                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#526170] font-semibold">Generic AI Assistants</th>
+                  <th className="py-4 px-4 font-mono-x text-[10px] tracking-[0.16em] uppercase text-[#043858] font-semibold border-l border-[#E4E7EC] bg-[#043858]/[0.06]">InsureMate</th>
                 </tr>
               </thead>
               <tbody>
                 {comparisonData.map((row, idx) => (
-                  <tr
-                    key={row.capability}
-                    className={`border-b border-[#D9D6CE] last:border-b-0 ${idx % 2 === 0 ? 'bg-[#FCFBF7]' : 'bg-[#F6F3EC]/50'}`}
-                  >
-                    <td className="py-3.5 px-4 font-display font-semibold text-[13px] text-[#0B1220] tracking-[-0.01em]">
-                      {row.capability}
-                    </td>
-                    <td className="py-3.5 px-4 font-mono-x text-[11px] text-[#667085]">{row.traditional}</td>
-                    <td className="py-3.5 px-4 font-mono-x text-[11px] text-[#667085]">{row.portals}</td>
-                    <td className="py-3.5 px-4 font-mono-x text-[11px] text-[#667085]">{row.genericAi}</td>
-                    <td className="py-3.5 px-4 font-mono-x text-[11px] font-semibold text-[#356AE6] border-l border-[#D9D6CE] bg-[#356AE6]/[0.04]">
-                      ✓ {row.insuremate}
-                    </td>
+                  <tr key={row.capability} className={`border-b border-[#E4E7EC] last:border-b-0 ${idx % 2 === 0 ? 'bg-white' : 'bg-[#F7F8FA]'}`}>
+                    <td className="py-3.5 px-4 font-display text-[15px] text-[#043858] tracking-[-0.01em]">{row.capability}</td>
+                    <td className="py-3.5 px-4 font-mono-x text-[11px] text-[#526170]">{row.traditional}</td>
+                    <td className="py-3.5 px-4 font-mono-x text-[11px] text-[#526170]">{row.portals}</td>
+                    <td className="py-3.5 px-4 font-mono-x text-[11px] text-[#526170]">{row.genericAi}</td>
+                    <td className="py-3.5 px-4 font-mono-x text-[11px] font-semibold text-[#043858] border-l border-[#E4E7EC] bg-[#043858]/[0.04]">✓ {row.insuremate}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          <p className="text-center font-display italic font-normal text-lg sm:text-xl text-[#0B1220] pt-2">
+          <p className="text-center font-display italic text-lg sm:text-xl text-[#043858] pt-2">
             “From policy information to treatment-aware financial clarity.”
           </p>
         </div>
       </section>
 
-      {/* ═══════════════ 7. IMPACT ═══════════════ */}
-      <section id="impact" className="py-20 lg:py-28 bg-[#F6F3EC]">
+      {/* 7. IMPACT — WHITE */}
+      <section id="impact" className="py-20 lg:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 
           <div className="max-w-3xl space-y-4">
-            <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#356AE6] font-semibold">
+            <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
               Outcomes
             </span>
-            <h2 className="font-display text-[2.2rem] sm:text-5xl leading-[1.05] font-semibold tracking-[-0.02em] text-[#0B1220]">
+            <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
               What changes when insurance information becomes understandable?
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#D9D6CE] border border-[#D9D6CE]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#E4E7EC] border border-[#E4E7EC]">
             {[
               { num: '01', title: 'PATIENTS', desc: 'Understand coverage before treatment begins. Eliminate uncertainty regarding waiting clauses and room-rent eligibility.' },
               { num: '02', title: 'FAMILIES', desc: 'Understand potential financial responsibility and co-payment obligations in advance before the final discharge bill arrives.' },
               { num: '03', title: 'HOSPITALS', desc: 'Reduce repetitive policy interpretation and streamline patient communications at the insurance desk.' },
               { num: '04', title: 'INSURANCE ECOSYSTEM', desc: 'Make complex policy information easier to access, fostering long-term policyholder trust and transparency.' },
             ].map((card) => (
-              <div key={card.num} className="p-7 bg-[#FCFBF7] space-y-4">
-                <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#356AE6] font-semibold block">
-                  {card.num}
-                </span>
-                <h3 className="font-display font-semibold text-lg text-[#0B1220] tracking-[-0.01em]">
-                  {card.title}
-                </h3>
-                <p className="text-[13px] text-[#667085] leading-relaxed">
-                  {card.desc}
-                </p>
+              <div key={card.num} className="p-7 bg-white space-y-4">
+                <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold block">{card.num}</span>
+                <h3 className="font-display text-xl text-[#043858] tracking-[-0.01em]">{card.title}</h3>
+                <p className="text-[13px] text-[#526170] leading-relaxed">{card.desc}</p>
               </div>
             ))}
           </div>
