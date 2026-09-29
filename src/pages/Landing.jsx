@@ -9,6 +9,12 @@ import {
   CheckCircle2,
   Lock,
   Info,
+  Sparkles,
+  Shield,
+  Zap,
+  Send,
+  Bot,
+  User,
 } from 'lucide-react';
 
 const IMAGES = {
@@ -53,84 +59,126 @@ export default function Landing({ whatsappUrl }) {
         .font-display { font-family: 'Instrument Serif', ui-serif, Georgia, serif; letter-spacing: -0.01em; }
         .font-ui { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
         .font-mono-x { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+        /* Smooth, modern scroll behaviour */
+        html { scroll-behavior: smooth; }
+
+        /* Premium card hover lift */
+        .card-lift {
+          transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                      border-color 0.35s ease;
+        }
+        .card-lift:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 18px 40px -18px rgba(4, 56, 88, 0.22);
+          border-color: rgba(4, 56, 88, 0.18);
+        }
+
+        /* Subtle chat bubble entrance */
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .chat-bubble { animation: fadeUp 0.5s ease-out both; }
+        .chat-bubble-1 { animation-delay: 0.1s; }
+        .chat-bubble-2 { animation-delay: 0.25s; }
+        .chat-bubble-3 { animation-delay: 0.4s; }
+        .chat-bubble-4 { animation-delay: 0.55s; }
+
+        /* Premium gradient border for hero chatbot */
+        .gradient-border {
+          position: relative;
+          background: linear-gradient(135deg, rgba(125, 211, 192, 0.4), rgba(4, 56, 88, 0.08));
+          padding: 1px;
+          border-radius: 24px;
+        }
+        .gradient-border-inner {
+          background: #ffffff;
+          border-radius: 23px;
+        }
+
+        /* Premium button shimmer */
+        .btn-primary {
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
+        .btn-primary::after {
+          content: '';
+          position: absolute;
+          top: 0; left: -100%;
+          width: 100%; height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+          transition: left 0.5s ease;
+        }
+        .btn-primary:hover::after { left: 100%; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 24px -12px rgba(4, 56, 88, 0.4); }
+
+        /* Section divider */
+        .section-divider {
+          height: 1px;
+          background: linear-gradient(90deg, transparent, #E4E7EC 20%, #E4E7EC 80%, transparent);
+        }
       `}</style>
 
-      {/* 1. HERO — WHITE */}
-      <section className="relative pt-10 pb-20 lg:pt-20 lg:pb-28 bg-white overflow-hidden border-b border-[#E4E7EC]">
+      {/* ============================================================ */}
+      {/* 1. HERO — CHATBOT AS THE MAIN FOCUS                         */}
+      {/* ============================================================ */}
+      <section className="relative pt-10 pb-20 lg:pt-16 lg:pb-28 bg-white overflow-hidden border-b border-[#E4E7EC]">
+        {/* Subtle dot grid background */}
         <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          className="absolute inset-0 opacity-[0.025] pointer-events-none"
           style={{
             backgroundImage: 'radial-gradient(#043858 1px, transparent 1px)',
             backgroundSize: '28px 28px',
           }}
         />
+        {/* Soft gradient orb for depth */}
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-[#7DD3C0]/[0.06] blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-[#043858]/[0.04] blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-12 items-center">
 
+            {/* Left: Copy */}
             <div className="lg:col-span-6 space-y-8">
               <div className="inline-flex items-center gap-2.5 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#043858] uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#7DD3C0]" />
-                Insurance Coverage &amp; Cost Intelligence
+                AI Insurance Chatbot
               </div>
 
-              {/* TWO-COLOR HEADING */}
-              <h1 className="font-display text-[2.8rem] sm:text-6xl lg:text-[4.2rem] leading-[1.02] tracking-[-0.02em] text-[#043858]">
-                Insurance is complicated.
+              <h1 className="font-display text-[2.8rem] sm:text-6xl lg:text-[4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
+                Your insurance policy,
                 <br />
-                <span className="italic text-[#5fbeaa]">Understanding it shouldn't be.</span>
+                <span className="text-[#5fbeaa]">finally explained.</span>
               </h1>
 
               <p className="text-lg sm:text-xl text-[#526170] leading-relaxed max-w-xl">
-                InsureMate turns complex insurance policies into clear, evidence-backed answers and treatment-cost intelligence.
+                InsureMate is an AI chatbot that reads your policy and answers treatment-cost questions with exact page-level evidence. No more guessing. No more 45-page PDFs.
               </p>
 
+              {/* Primary CTAs — both navigate to chatbot page */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-md bg-[#043858] text-white font-semibold text-[15px] tracking-wide hover:bg-[#032c46] transition-colors active:scale-[0.99]"
+                <Link
+                  to="/chatbot"
+                  className="btn-primary inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-lg bg-[#043858] text-white font-semibold text-[15px] tracking-wide hover:bg-[#032c46] active:scale-[0.99]"
                 >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>CHAT ON WHATSAPP</span>
+                  <Bot className="w-4 h-4" />
+                  <span>START CHATTING</span>
                   <ArrowRight className="w-4 h-4" />
-                </a>
+                </Link>
 
                 <Link
                   to="/experience"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-md border border-[#E4E7EC] bg-white text-[#043858] font-semibold text-[15px] tracking-wide hover:bg-[#F7F8FA] hover:border-[#043858]/25 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg border border-[#E4E7EC] bg-white text-[#043858] font-semibold text-[15px] tracking-wide hover:bg-[#F7F8FA] hover:border-[#043858]/25 transition-all duration-300"
                 >
                   <span>SEE HOW IT WORKS</span>
                   <ArrowRight className="w-4 h-4 text-[#526170]" />
                 </Link>
               </div>
 
-              <div className="relative pt-3 pb-6">
-                <figure className="relative overflow-hidden rounded-sm border border-[#E4E7EC]">
-                  <img
-                    src={IMAGES.heroDocuments}
-                    alt="Insurance policy documents and medical paperwork on a desk"
-                    loading="lazy"
-                    className="w-full h-[240px] sm:h-[280px] object-cover grayscale-[10%] contrast-[1.03]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#043858]/55 via-[#043858]/5 to-transparent" />
-                  <figcaption className="absolute bottom-3 left-4 right-4 flex items-end justify-between gap-4">
-                    <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-white/95">The document, not the story</span>
-                    <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-white/75">Fig. 01</span>
-                  </figcaption>
-                </figure>
-
-                <figure className="absolute -bottom-4 right-4 sm:right-8 w-[42%] max-w-[220px] overflow-hidden rounded-sm border border-[#E4E7EC] shadow-[0_20px_40px_-20px_rgba(4,56,88,0.3)]">
-                  <img
-                    src={IMAGES.deskOverhead}
-                    alt="Overhead view of medical bills, calculator and insurance paperwork"
-                    loading="lazy"
-                    className="w-full h-[120px] sm:h-[140px] object-cover grayscale-[10%]"
-                  />
-                </figure>
-              </div>
-
+              {/* Trust signals */}
               <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2 text-[11px] font-mono-x tracking-[0.12em] uppercase text-[#526170]">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#7DD3C0]" /> Page 18 · Clause Evidence
@@ -142,71 +190,126 @@ export default function Landing({ whatsappUrl }) {
                   <Lock className="w-3.5 h-3.5 text-[#7DD3C0]" /> Zero Guesswork
                 </span>
               </div>
+
+              {/* Supporting image strip */}
+              <div className="relative pt-4 pb-6">
+                <figure className="relative overflow-hidden rounded-lg border border-[#E4E7EC]">
+                  <img
+                    src={IMAGES.heroDocuments}
+                    alt="Insurance policy documents and medical paperwork on a desk"
+                    loading="lazy"
+                    className="w-full h-[200px] sm:h-[240px] object-cover grayscale-[10%] contrast-[1.03]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#043858]/50 via-[#043858]/5 to-transparent" />
+                  <figcaption className="absolute bottom-3 left-4 right-4 flex items-end justify-between gap-4">
+                    <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-white/95">The document, not the story</span>
+                    <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-white/75">Fig. 01</span>
+                  </figcaption>
+                </figure>
+
+                <figure className="absolute -bottom-4 right-4 sm:right-8 w-[42%] max-w-[200px] overflow-hidden rounded-lg border border-[#E4E7EC] shadow-[0_20px_40px_-20px_rgba(4,56,88,0.3)]">
+                  <img
+                    src={IMAGES.deskOverhead}
+                    alt="Overhead view of medical bills, calculator and insurance paperwork"
+                    loading="lazy"
+                    className="w-full h-[110px] sm:h-[130px] object-cover grayscale-[10%]"
+                  />
+                </figure>
+              </div>
             </div>
 
-            <div className="lg:col-span-6 flex flex-col sm:flex-row items-start justify-center gap-6 lg:pt-4">
+            {/* Right: Chatbot Demo — THE MAIN FOCUS */}
+            <div className="lg:col-span-6 flex flex-col items-center gap-6 lg:pt-0">
 
-              <div className="w-full max-w-[320px] rounded-[36px] bg-[#043858] p-2.5 shadow-[0_24px_50px_-20px_rgba(4,56,88,0.4)]">
-                <div className="bg-[#EFEAE2] rounded-[28px] overflow-hidden flex flex-col h-[520px]">
-                  <div className="bg-[#075E54] text-white px-3.5 py-3 flex items-center gap-2.5 shrink-0">
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs text-[#5EEAD4]">IM</div>
+              {/* Chatbot window — premium styling */}
+              <div className="w-full max-w-[440px] gradient-border shadow-[0_30px_60px_-25px_rgba(4,56,88,0.35)]">
+                <div className="gradient-border-inner overflow-hidden">
+                  {/* Chat header */}
+                  <div className="bg-[#043858] text-white px-5 py-4 flex items-center gap-3">
+                    <div className="relative">
+                      <div className="w-10 h-10 rounded-full bg-[#7DD3C0]/20 flex items-center justify-center">
+                        <Bot className="w-5 h-5 text-[#7DD3C0]" />
+                      </div>
+                      <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#25D366] border-2 border-[#043858]" />
+                    </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <p className="text-sm font-semibold truncate leading-tight">InsureMate</p>
-                        <span className="w-3.5 h-3.5 rounded-full bg-[#25D366] text-white flex items-center justify-center text-[9px] font-bold">✓</span>
+                        <p className="text-sm font-semibold truncate leading-tight">InsureMate AI</p>
+                        <span className="w-3.5 h-3.5 rounded-full bg-[#7DD3C0] text-[#043858] flex items-center justify-center text-[8px] font-bold">✓</span>
                       </div>
-                      <p className="text-[10px] text-white/80 leading-none">Policy &amp; Cost Intelligence</p>
+                      <p className="text-[10px] text-white/70 leading-none">Policy Intelligence Assistant</p>
                     </div>
-                    <div className="text-[9px] font-mono-x bg-white/15 px-2 py-0.5 rounded text-white/90">OFFICIAL</div>
+                    <div className="flex items-center gap-1.5 text-[9px] font-mono-x bg-white/10 px-2.5 py-1 rounded-full text-white/90">
+                      <Sparkles className="w-2.5 h-2.5 text-[#7DD3C0]" />
+                      AI
+                    </div>
                   </div>
 
-                  <div className="flex-1 p-3 space-y-3 overflow-y-auto text-xs bg-[#EFEAE2]">
+                  {/* Chat body */}
+                  <div className="bg-[#F7F8FA] p-5 space-y-4 min-h-[420px]">
+                    {/* System pill */}
                     <div className="text-center">
-                      <span className="bg-white/85 text-[#526170] text-[10px] font-mono-x px-2 py-0.5 rounded">
-                        Policy: Star Comprehensive Health Schedule
+                      <span className="bg-white text-[#526170] text-[10px] font-mono-x px-3 py-1 rounded-full border border-[#E4E7EC] shadow-sm">
+                        Policy loaded: Star Comprehensive Health
                       </span>
                     </div>
 
-                    <div className="flex justify-end">
-                      <div className="bg-[#E7FFDB] text-[#172033] rounded-lg rounded-tr-none px-3 py-2 max-w-[85%] space-y-1 border border-[#D0F0C0]">
-                        <p className="text-xs font-medium">Does my policy cover cataract surgery?</p>
-                        <p className="text-[9px] text-[#526170] text-right font-mono-x">11:15 AM · ✓✓</p>
+                    {/* User question 1 */}
+                    <div className="chat-bubble chat-bubble-1 flex justify-end gap-2.5">
+                      <div className="bg-[#043858] text-white rounded-2xl rounded-tr-md px-4 py-3 max-w-[85%] space-y-1 shadow-sm">
+                        <p className="text-[13px] leading-relaxed">Does my policy cover cataract surgery?</p>
+                        <p className="text-[9px] text-white/60 text-right font-mono-x">11:15 AM · ✓✓</p>
+                      </div>
+                      <div className="w-7 h-7 rounded-full bg-[#E4E7EC] flex items-center justify-center shrink-0 mt-1">
+                        <User className="w-3.5 h-3.5 text-[#526170]" />
                       </div>
                     </div>
 
-                    <div className="flex justify-start">
-                      <div className="bg-white text-[#172033] rounded-lg rounded-tl-none px-3 py-2.5 max-w-[90%] space-y-2">
-                        <p className="text-xs leading-relaxed">
+                    {/* AI answer 1 */}
+                    <div className="chat-bubble chat-bubble-2 flex justify-start gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-[#043858] flex items-center justify-center shrink-0 mt-1">
+                        <Bot className="w-3.5 h-3.5 text-[#7DD3C0]" />
+                      </div>
+                      <div className="bg-white text-[#172033] rounded-2xl rounded-tl-md px-4 py-3.5 max-w-[88%] space-y-2.5 shadow-sm border border-[#E4E7EC]">
+                        <p className="text-[13px] leading-relaxed">
                           <strong className="text-[#043858] font-semibold">Potentially covered</strong>, subject to the applicable waiting period and policy limits.
                         </p>
-                        <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-[#043858]/5 border border-[#043858]/10 text-[10px] font-mono-x text-[#043858]">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-[#043858]/5 border border-[#043858]/10 text-[10px] font-mono-x text-[#043858]">
                           <FileText className="w-3 h-3" />
                           <span>Page 18 · Section 3.4</span>
                         </div>
-                        <div className="pt-0.5 flex items-center justify-between border-t border-slate-100">
+                        <div className="pt-1 flex items-center justify-between border-t border-slate-100">
                           <span className="text-[9px] font-mono-x uppercase tracking-wider text-[#7DD3C0] font-bold">EVIDENCE-BACKED</span>
                           <span className="text-[9px] text-[#526170] font-mono-x">11:15 AM</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex justify-end">
-                      <div className="bg-[#E7FFDB] text-[#172033] rounded-lg rounded-tr-none px-3 py-2 max-w-[85%] space-y-1 border border-[#D0F0C0]">
-                        <p className="text-xs font-medium">What might I have to pay?</p>
-                        <p className="text-[9px] text-[#526170] text-right font-mono-x">11:16 AM · ✓✓</p>
+                    {/* User question 2 */}
+                    <div className="chat-bubble chat-bubble-3 flex justify-end gap-2.5">
+                      <div className="bg-[#043858] text-white rounded-2xl rounded-tr-md px-4 py-3 max-w-[85%] space-y-1 shadow-sm">
+                        <p className="text-[13px] leading-relaxed">What might I have to pay?</p>
+                        <p className="text-[9px] text-white/60 text-right font-mono-x">11:16 AM · ✓✓</p>
+                      </div>
+                      <div className="w-7 h-7 rounded-full bg-[#E4E7EC] flex items-center justify-center shrink-0 mt-1">
+                        <User className="w-3.5 h-3.5 text-[#526170]" />
                       </div>
                     </div>
 
-                    <div className="flex justify-start">
-                      <div className="bg-white text-[#172033] rounded-lg rounded-tl-none px-3 py-2.5 max-w-[90%] space-y-2 border-l-2 border-l-[#7DD3C0]">
-                        <div className="flex items-center gap-1 text-[10px] font-mono-x font-semibold text-[#043858]">
-                          <AlertCircle className="w-3 h-3" />
+                    {/* AI answer 2 — clarification */}
+                    <div className="chat-bubble chat-bubble-4 flex justify-start gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-[#043858] flex items-center justify-center shrink-0 mt-1">
+                        <Bot className="w-3.5 h-3.5 text-[#7DD3C0]" />
+                      </div>
+                      <div className="bg-white text-[#172033] rounded-2xl rounded-tl-md px-4 py-3.5 max-w-[88%] space-y-2.5 shadow-sm border border-[#E4E7EC] border-l-2 border-l-[#7DD3C0]">
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono-x font-semibold text-[#043858]">
+                          <AlertCircle className="w-3.5 h-3.5 text-[#7DD3C0]" />
                           <span>NEED LOCATION &amp; HOSPITAL</span>
                         </div>
-                        <p className="text-xs leading-relaxed text-[#172033]">
+                        <p className="text-[13px] leading-relaxed text-[#172033]">
                           I need your treatment location and hospital type before estimating reliably.
                         </p>
-                        <div className="flex items-center justify-between border-t border-slate-100 pt-1">
+                        <div className="flex items-center justify-between border-t border-slate-100 pt-1.5">
                           <span className="text-[9px] font-mono-x text-[#526170]">NO GUESSWORK</span>
                           <span className="text-[9px] text-[#526170] font-mono-x">11:16 AM</span>
                         </div>
@@ -214,31 +317,149 @@ export default function Landing({ whatsappUrl }) {
                     </div>
                   </div>
 
-                  <div className="bg-[#F0F2F5] px-3 py-2 border-t border-slate-200 flex items-center gap-2">
-                    <div className="flex-1 bg-white rounded-full px-3 py-1.5 text-[11px] text-[#526170] border border-slate-200">
+                  {/* Chat input */}
+                  <div className="bg-white px-4 py-3.5 border-t border-[#E4E7EC] flex items-center gap-3">
+                    <div className="flex-1 bg-[#F7F8FA] rounded-full px-4 py-2.5 text-[12px] text-[#526170] border border-[#E4E7EC]">
                       Type a policy question...
                     </div>
-                    <div className="w-7 h-7 rounded-full bg-[#075E54] flex items-center justify-center text-white">
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
+                    <button className="w-9 h-9 rounded-full bg-[#043858] flex items-center justify-center text-white hover:bg-[#032c46] transition-colors">
+                      <Send className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
 
-              <div className="w-full sm:w-[250px] bg-white text-[#043858] rounded-xl p-5 border border-[#E4E7EC] flex flex-col items-center text-center space-y-4">
-                <div className="w-full pb-3 border-b border-[#E4E7EC]">
+              {/* Feature badges under chatbot */}
+              <div className="grid grid-cols-3 gap-3 w-full max-w-[440px]">
+                <div className="flex flex-col items-center gap-1.5 p-3 bg-white rounded-xl border border-[#E4E7EC] text-center">
+                  <Shield className="w-4 h-4 text-[#7DD3C0]" />
+                  <span className="text-[10px] font-mono-x tracking-wider uppercase text-[#526170]">Evidence</span>
+                </div>
+                <div className="flex flex-col items-center gap-1.5 p-3 bg-white rounded-xl border border-[#E4E7EC] text-center">
+                  <Zap className="w-4 h-4 text-[#7DD3C0]" />
+                  <span className="text-[10px] font-mono-x tracking-wider uppercase text-[#526170]">Instant</span>
+                </div>
+                <div className="flex flex-col items-center gap-1.5 p-3 bg-white rounded-xl border border-[#E4E7EC] text-center">
+                  <MessageSquare className="w-4 h-4 text-[#7DD3C0]" />
+                  <span className="text-[10px] font-mono-x tracking-wider uppercase text-[#526170]">WhatsApp</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 2. WHATSAPP INTEGRATION — SECOND SECTION                     */}
+      {/* ============================================================ */}
+      <section className="py-20 lg:py-28 bg-[#F7F8FA] border-b border-[#E4E7EC]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+            <div className="lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center gap-2 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#043858] uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#7DD3C0]" />
+                WhatsApp Integration
+              </div>
+              <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.2rem] leading-[1.08] tracking-[-0.02em] text-[#043858]">
+                Your insurance assistant.
+                <br />
+                <span className="text-[#7DD3C0]">Already in your pocket.</span>
+              </h2>
+              <p className="text-base sm:text-lg text-[#526170] leading-relaxed max-w-2xl">
+                Start once through our website. After that, you don't need to return here every time. Your AI assistant lives right inside WhatsApp.
+              </p>
+            </div>
+
+            <figure className="lg:col-span-5">
+              <div className="overflow-hidden rounded-xl border border-[#E4E7EC] shadow-sm card-lift">
+                <img
+                  src={IMAGES.pocketChat}
+                  alt="Person using a smartphone to review insurance information"
+                  loading="lazy"
+                  className="w-full h-[200px] sm:h-[240px] object-cover grayscale-[15%] contrast-[1.03]"
+                />
+              </div>
+              <figcaption className="mt-3 flex items-center justify-between font-mono-x text-[10px] tracking-[0.2em] uppercase text-[#526170]">
+                <span>WhatsApp-native workflow</span>
+                <span>Fig. 02</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          {/* Steps + QR */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Steps */}
+            <div className="lg:col-span-8">
+              <div className="grid grid-cols-1 sm:grid-cols-5 border-t border-[#E4E7EC]">
+                {[
+                  { num: '01', title: 'WEBSITE', desc: 'Scan QR Code' },
+                  { num: '02', title: 'WHATSAPP', desc: 'Opens Chat' },
+                  { num: '03', title: 'SEND POLICY', desc: 'PDF or Photo' },
+                  { num: '04', title: 'ASK ANYTIME', desc: 'Natural English' },
+                  { num: '05', title: 'EVIDENCE', desc: 'Page-cited Answer' },
+                ].map((step) => (
+                  <div key={step.title} className="py-6 pr-6 border-b sm:border-b-0 sm:border-r border-[#E4E7EC] last:border-r-0 space-y-2">
+                    <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold block">
+                      {step.num}
+                    </span>
+                    <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
+                      {step.title}
+                    </span>
+                    <span className="text-[12px] text-[#526170] block leading-relaxed">
+                      {step.desc}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Feature notes */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
+                <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
+                  <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
+                    Continue previous conversation
+                  </span>
+                  <p className="text-[13px] text-[#526170] leading-relaxed">
+                    Resume right where you left off. Your policy context is retained according to your privacy settings.
+                  </p>
+                </div>
+
+                <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
+                  <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
+                    Ask new questions
+                  </span>
+                  <p className="text-[13px] text-[#526170] leading-relaxed">
+                    Check room rents, diagnostics, pre-hospitalization allowances, or specific surgery eligibility anytime.
+                  </p>
+                </div>
+
+                <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
+                  <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
+                    Revisit previous answers
+                  </span>
+                  <p className="text-[13px] text-[#526170] leading-relaxed">
+                    Refer back to verified clause numbers during discussions with hospital insurance TPA desks.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* QR Card */}
+            <div className="lg:col-span-4">
+              <div className="bg-white rounded-2xl p-6 border border-[#E4E7EC] shadow-sm card-lift flex flex-col items-center text-center space-y-5">
+                <div className="w-full pb-4 border-b border-[#E4E7EC]">
                   <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
                     Start on WhatsApp
                   </span>
-                  <h3 className="font-display text-lg text-[#043858] mt-1">
+                  <h3 className="font-display text-xl text-[#043858] mt-1.5">
                     Scan Once to Begin
                   </h3>
                 </div>
 
-                <div className="p-3 bg-white rounded-lg border border-[#E4E7EC]">
+                <div className="p-4 bg-white rounded-xl border border-[#E4E7EC]">
                   <QRCodeSVG
                     value={whatsappUrl}
-                    size={128}
+                    size={140}
                     bgColor={"#FFFFFF"}
                     fgColor={"#043858"}
                     level={"M"}
@@ -253,12 +474,12 @@ export default function Landing({ whatsappUrl }) {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2.5 px-3 rounded-md bg-[#043858] hover:bg-[#032c46] text-white text-[11px] font-mono-x font-semibold tracking-[0.16em] uppercase transition-colors"
+                  className="btn-primary w-full py-3 px-4 rounded-lg bg-[#043858] hover:bg-[#032c46] text-white text-[11px] font-mono-x font-semibold tracking-[0.16em] uppercase transition-all"
                 >
                   Scan to Chat
                 </a>
 
-                <p className="text-[10px] text-[#526170] leading-relaxed pt-2 border-t border-[#E4E7EC]">
+                <p className="text-[10px] text-[#526170] leading-relaxed pt-3 border-t border-[#E4E7EC]">
                   After your first conversation, you can return directly to WhatsApp. You do not need to revisit this website for every question.
                 </p>
               </div>
@@ -267,8 +488,10 @@ export default function Landing({ whatsappUrl }) {
         </div>
       </section>
 
-      {/* 2. CORE STATEMENT — LIGHT GREY (no dark) */}
-      <section className="py-24 lg:py-32 bg-[#F7F8FA] relative overflow-hidden border-b border-[#E4E7EC]">
+      {/* ============================================================ */}
+      {/* 3. CORE STATEMENT — WHITE                                    */}
+      {/* ============================================================ */}
+      <section className="py-24 lg:py-32 bg-white relative overflow-hidden border-b border-[#E4E7EC]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex items-center gap-3 mb-8">
             <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
@@ -277,10 +500,10 @@ export default function Landing({ whatsappUrl }) {
             <span className="h-px flex-1 bg-[#E4E7EC]" />
           </div>
 
-          <blockquote className="font-display text-[2.6rem] sm:text-5xl lg:text-[4.2rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
+          <blockquote className="font-display text-[2.6rem] sm:text-5xl lg:text-[4rem] leading-[1.08] tracking-[-0.02em] text-[#043858]">
             “The policy doesn’t fail.
             <br />
-            <span className="italic text-[#7DD3C0]">
+            <span className="text-[#7DD3C0]">
               The information platform does.”
             </span>
           </blockquote>
@@ -296,8 +519,10 @@ export default function Landing({ whatsappUrl }) {
         </div>
       </section>
 
-      {/* 3. PROBLEM + RESEARCH — WHITE */}
-      <section id="problem" className="py-20 lg:py-28 bg-white border-b border-[#E4E7EC]">
+      {/* ============================================================ */}
+      {/* 4. PROBLEM + RESEARCH — LIGHT GREY                           */}
+      {/* ============================================================ */}
+      <section id="problem" className="py-20 lg:py-28 bg-[#F7F8FA] border-b border-[#E4E7EC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
 
           <div className="max-w-3xl space-y-4">
@@ -307,7 +532,7 @@ export default function Landing({ whatsappUrl }) {
             </div>
             <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
               A transparency deficit <br />
-              <span className="italic text-[#7DD3C0]">in health insurance.</span>
+              <span className="text-[#7DD3C0]">in health insurance.</span>
             </h2>
             <p className="text-base sm:text-lg text-[#526170] leading-relaxed">
               Documented survey evidence shows widespread ambiguity among insured policyholders at the time of claim filing.
@@ -315,7 +540,7 @@ export default function Landing({ whatsappUrl }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="p-6 sm:p-8 bg-white border border-[#E4E7EC] border-l-2 border-l-[#7DD3C0] space-y-3">
+            <div className="card-lift p-6 sm:p-8 bg-white border border-[#E4E7EC] border-l-2 border-l-[#7DD3C0] space-y-3 rounded-xl">
               <div className="font-display text-6xl sm:text-7xl text-[#043858] tracking-[-0.03em] leading-none">
                 80<span className="text-[#7DD3C0]">%</span>
               </div>
@@ -327,7 +552,7 @@ export default function Landing({ whatsappUrl }) {
               </div>
             </div>
 
-            <div className="p-6 sm:p-8 bg-white border border-[#E4E7EC] space-y-3">
+            <div className="card-lift p-6 sm:p-8 bg-white border border-[#E4E7EC] space-y-3 rounded-xl">
               <div className="font-display text-6xl sm:text-7xl text-[#043858] tracking-[-0.03em] leading-none">
                 65<span className="text-[#7DD3C0]">%</span>
               </div>
@@ -339,7 +564,7 @@ export default function Landing({ whatsappUrl }) {
               </div>
             </div>
 
-            <div className="p-6 sm:p-8 bg-white border border-[#E4E7EC] space-y-3">
+            <div className="card-lift p-6 sm:p-8 bg-white border border-[#E4E7EC] space-y-3 rounded-xl">
               <div className="font-display text-6xl sm:text-7xl text-[#043858] tracking-[-0.03em] leading-none">
                 50<span className="text-[#7DD3C0]">%+</span>
               </div>
@@ -352,15 +577,17 @@ export default function Landing({ whatsappUrl }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-4 bg-[#F7F8FA] border border-[#E4E7EC] font-mono-x text-[12px] text-[#526170]">
+          <div className="flex items-center gap-3 p-4 bg-white border border-[#E4E7EC] font-mono-x text-[12px] text-[#526170] rounded-lg">
             <Info className="w-4 h-4 text-[#7DD3C0] shrink-0" />
             <span>Survey metrics reflect sampled policyholder respondents highlighting structural information gaps.</span>
           </div>
         </div>
       </section>
 
-      {/* 4. CLAUSES — LIGHT GREY (no dark bg) */}
-      <section className="py-20 lg:py-28 bg-[#F7F8FA] border-b border-[#E4E7EC]">
+      {/* ============================================================ */}
+      {/* 5. CLAUSES — WHITE                                           */}
+      {/* ============================================================ */}
+      <section className="py-20 lg:py-28 bg-white border-b border-[#E4E7EC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="max-w-3xl space-y-4 mb-12">
@@ -369,7 +596,7 @@ export default function Landing({ whatsappUrl }) {
             </span>
             <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
               What makes insurance <br />
-              <span className="italic text-[#7DD3C0]">hard to understand.</span>
+              <span className="text-[#7DD3C0]">hard to understand.</span>
             </h2>
             <p className="text-base text-[#526170] leading-relaxed">
               A standard health policy contains dozens of interlocking clauses that determine the final settlement.
@@ -377,9 +604,9 @@ export default function Landing({ whatsappUrl }) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#E4E7EC] border border-[#E4E7EC]">
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#E4E7EC] border border-[#E4E7EC] rounded-xl overflow-hidden">
               {policyClauses.map((c) => (
-                <div key={c.name} className="p-5 bg-white space-y-2 hover:bg-[#F7F8FA] transition-colors">
+                <div key={c.name} className="p-5 bg-white space-y-2 hover:bg-[#F7F8FA] transition-colors duration-300">
                   <span className="font-mono-x text-[10px] tracking-[0.18em] uppercase text-[#7DD3C0] font-semibold">
                     {c.name}
                   </span>
@@ -390,8 +617,7 @@ export default function Landing({ whatsappUrl }) {
               ))}
             </div>
 
-            {/* InsureMate reveal card — now dark for accent contrast */}
-            <div className="lg:col-span-5 p-7 bg-[#043858] text-white border border-[#043858] space-y-5">
+            <div className="lg:col-span-5 p-8 bg-[#043858] text-white border border-[#043858] space-y-5 rounded-xl shadow-[0_20px_40px_-20px_rgba(4,56,88,0.3)]">
               <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold">
                 InsureMate Intelligence
               </span>
@@ -410,96 +636,9 @@ export default function Landing({ whatsappUrl }) {
         </div>
       </section>
 
-      {/* 5. WHATSAPP-FIRST — WHITE */}
-      <section className="py-20 lg:py-28 bg-white border-b border-[#E4E7EC]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
-            <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 text-[11px] font-mono-x font-medium tracking-[0.18em] text-[#043858] uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#7DD3C0]" />
-                Accessibility
-              </div>
-              <h2 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-[-0.02em] text-[#043858]">
-                Your insurance assistant.
-                <br />
-                <span className="italic text-[#7DD3C0]">Already in your pocket.</span>
-              </h2>
-              <p className="text-base sm:text-lg text-[#526170] leading-relaxed max-w-2xl">
-                Start once through our website. After that, you don't need to return here every time.
-              </p>
-            </div>
-
-            <figure className="lg:col-span-5">
-              <div className="overflow-hidden rounded-sm border border-[#E4E7EC]">
-                <img
-                  src={IMAGES.pocketChat}
-                  alt="Person using a smartphone to review insurance information"
-                  loading="lazy"
-                  className="w-full h-[200px] sm:h-[240px] object-cover grayscale-[15%] contrast-[1.03]"
-                />
-              </div>
-              <figcaption className="mt-2 flex items-center justify-between font-mono-x text-[10px] tracking-[0.2em] uppercase text-[#526170]">
-                <span>WhatsApp-native workflow</span>
-                <span>Fig. 02</span>
-              </figcaption>
-            </figure>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-5 border-t border-[#E4E7EC]">
-            {[
-              { num: '01', title: 'WEBSITE', desc: 'Scan QR Code' },
-              { num: '02', title: 'WHATSAPP', desc: 'Opens Chat' },
-              { num: '03', title: 'SEND POLICY', desc: 'PDF or Photo' },
-              { num: '04', title: 'ASK ANYTIME', desc: 'Natural English' },
-              { num: '05', title: 'EVIDENCE', desc: 'Page-cited Answer' },
-            ].map((step) => (
-              <div key={step.title} className="py-6 pr-6 border-b sm:border-b-0 sm:border-r border-[#E4E7EC] last:border-r-0 space-y-2">
-                <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold block">
-                  {step.num}
-                </span>
-                <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
-                  {step.title}
-                </span>
-                <span className="text-[12px] text-[#526170] block leading-relaxed">
-                  {step.desc}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
-              <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
-                Continue previous conversation
-              </span>
-              <p className="text-[13px] text-[#526170] leading-relaxed">
-                Resume right where you left off. Your policy context is retained according to your privacy settings.
-              </p>
-            </div>
-
-            <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
-              <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
-                Ask new questions
-              </span>
-              <p className="text-[13px] text-[#526170] leading-relaxed">
-                Check room rents, diagnostics, pre-hospitalization allowances, or specific surgery eligibility anytime.
-              </p>
-            </div>
-
-            <div className="pl-4 border-l-2 border-[#7DD3C0] space-y-2">
-              <span className="font-display text-lg text-[#043858] block tracking-[-0.01em]">
-                Revisit previous answers
-              </span>
-              <p className="text-[13px] text-[#526170] leading-relaxed">
-                Refer back to verified clause numbers during discussions with hospital insurance TPA desks.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. COMPARISON — LIGHT GREY */}
+      {/* ============================================================ */}
+      {/* 6. COMPARISON — LIGHT GREY                                   */}
+      {/* ============================================================ */}
       <section id="comparison" className="py-20 lg:py-28 bg-[#F7F8FA] border-b border-[#E4E7EC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
@@ -515,7 +654,7 @@ export default function Landing({ whatsappUrl }) {
             </p>
           </div>
 
-          <div className="border border-[#E4E7EC] overflow-x-auto bg-white">
+          <div className="border border-[#E4E7EC] overflow-x-auto bg-white rounded-xl shadow-sm">
             <table className="w-full text-left border-collapse min-w-[760px] text-[12px]">
               <thead>
                 <tr className="bg-[#F7F8FA] border-b border-[#E4E7EC]">
@@ -540,13 +679,15 @@ export default function Landing({ whatsappUrl }) {
             </table>
           </div>
 
-          <p className="text-center font-display italic text-lg sm:text-xl text-[#043858] pt-2">
+          <p className="text-center font-display text-lg sm:text-xl text-[#043858] pt-2">
             “From policy information to treatment-aware financial clarity.”
           </p>
         </div>
       </section>
 
-      {/* 7. IMPACT — WHITE */}
+      {/* ============================================================ */}
+      {/* 7. IMPACT — WHITE                                            */}
+      {/* ============================================================ */}
       <section id="impact" className="py-20 lg:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 
@@ -559,14 +700,14 @@ export default function Landing({ whatsappUrl }) {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#E4E7EC] border border-[#E4E7EC]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#E4E7EC] border border-[#E4E7EC] rounded-xl overflow-hidden">
             {[
               { num: '01', title: 'PATIENTS', desc: 'Understand coverage before treatment begins. Eliminate uncertainty regarding waiting clauses and room-rent eligibility.' },
               { num: '02', title: 'FAMILIES', desc: 'Understand potential financial responsibility and co-payment obligations in advance before the final discharge bill arrives.' },
               { num: '03', title: 'HOSPITALS', desc: 'Reduce repetitive policy interpretation and streamline patient communications at the insurance desk.' },
               { num: '04', title: 'INSURANCE ECOSYSTEM', desc: 'Make complex policy information easier to access, fostering long-term policyholder trust and transparency.' },
             ].map((card) => (
-              <div key={card.num} className="p-7 bg-white space-y-4">
+              <div key={card.num} className="p-7 bg-white space-y-4 hover:bg-[#F7F8FA] transition-colors duration-300">
                 <span className="font-mono-x text-[10px] tracking-[0.22em] uppercase text-[#7DD3C0] font-semibold block">{card.num}</span>
                 <h3 className="font-display text-xl text-[#043858] tracking-[-0.01em]">{card.title}</h3>
                 <p className="text-[13px] text-[#526170] leading-relaxed">{card.desc}</p>
