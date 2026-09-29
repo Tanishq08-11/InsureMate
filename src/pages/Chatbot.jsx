@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
     Bot, User, Send, Upload, FileText, Shield, AlertCircle,
     CheckCircle2, XCircle, ArrowLeft, Loader2, Sparkles,
-    IndianRupee, Clock, GitCompare, Info,
+    IndianRupee, Clock, GitCompare, Info, Key, Settings
 } from 'lucide-react';
 import {
     extractPdfText,
@@ -13,6 +13,8 @@ import {
     TREATMENT_DATASET,
     buildWaitingTimeline,
     runWhatIf,
+    setCustomApiKey,
+    getApiKey,
 } from '../lib/insuremateEngine';
 
 // ============================================================
@@ -54,14 +56,62 @@ function Money({ value }) {
 // MAIN PAGE
 // ============================================================
 
+function ApiKeyModal({ isOpen, onClose }) {
+    const [keyInput, setKeyInput] = useState(getApiKey());
+    if (!isOpen) return null;
+    return (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl p-6 max-w-md w-full space-y-4 shadow-xl">
+                <div className="flex items-center gap-2 text-[#043858] font-semibold text-lg">
+                    <Key className="w-5 h-5" />
+                    Configure OpenRouter API Key
+                </div>
+                <p className="text-xs text-[#526170]">
+                    (Optional) Enter your OpenRouter API key for LLM policy extraction. If left blank, InsureMate will use high-accuracy rule-based parsing.
+                </p>
+                <input
+                    type="password"
+                    value={keyInput}
+                    onChange={(e) => setKeyInput(e.target.value)}
+                    placeholder="sk-or-v1-..."
+                    className="w-full px-3 py-2 border border-[#E4E7EC] rounded-lg text-sm font-mono-x focus:outline-none focus:border-[#043858]"
+                />
+                <div className="flex justify-end gap-2 pt-2">
+                    <button
+                        onClick={() => {
+                            setCustomApiKey('');
+                            setKeyInput('');
+                            onClose();
+                        }}
+                        className="px-4 py-2 text-xs text-red-600 font-semibold hover:bg-red-50 rounded-lg"
+                    >
+                        Clear Key
+                    </button>
+                    <button
+                        onClick={() => {
+                            setCustomApiKey(keyInput);
+                            onClose();
+                        }}
+                        className="px-4 py-2 text-xs bg-[#043858] text-white font-semibold rounded-lg hover:bg-[#032c46]"
+                    >
+                        Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Chatbot() {
     const [stage, setStage] = useState('upload');
     const [extracted, setExtracted] = useState(null);
     const [summary, setSummary] = useState(null);
     const [error, setError] = useState(null);
+    const [showKeyModal, setShowKeyModal] = useState(false);
 
     return (
         <div className="min-h-screen bg-[#F7F8FA] font-ui">
+            <ApiKeyModal isOpen={showKeyModal} onClose={() => setShowKeyModal(false)} />
             <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
         .font-display { font-family: 'Instrument Serif', ui-serif, Georgia, serif; letter-spacing: -0.01em; }
@@ -76,6 +126,13 @@ export default function Chatbot() {
                         <span className="font-display text-xl">InsureMate</span>
                     </Link>
                     <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setShowKeyModal(true)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E4E7EC] text-xs text-[#043858] hover:bg-[#F7F8FA]"
+                        >
+                            <Key className="w-3.5 h-3.5 text-[#043858]" />
+                            {getApiKey() ? 'API Key Set' : 'Set API Key'}
+                        </button>
                         {summary && (
                             <Pill tone="green">
                                 <CheckCircle2 className="w-3 h-3" />
