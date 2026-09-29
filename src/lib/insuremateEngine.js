@@ -4,8 +4,10 @@
 
 import * as pdfjsLib from 'pdfjs-dist';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+// Use a versioned URL that matches the installed pdfjs-dist package (3.11.174).
+// We copy the worker into /public/pdf.worker.min.js via vite.config.js so it
+// is always available on every deployment without relying on an external CDN.
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '';
 const LLM_BASE_URL =
@@ -250,7 +252,8 @@ export function runWhatIf({ base, overrides, treatment, hospitalTier }) {
 async function callLLM({ system, user, jsonMode = false }) {
     if (!OPENROUTER_API_KEY) {
         throw new Error(
-            'Missing VITE_OPENROUTER_API_KEY. Add it to your .env and restart the dev server.'
+            'API key not configured. Please set VITE_OPENROUTER_API_KEY in your deployment environment variables. ' +
+            'Get a free key at https://openrouter.ai → Dashboard → API Keys.'
         );
     }
 
